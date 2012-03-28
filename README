@@ -36,3 +36,8 @@ SYNOPSYS
 7.To test the package
 	execute, NOTE : for production, create a valid key store and edit runXeroxApp
 	./runXeroxApp.sh
+	
+Project Configuration
+1.maven for build and dependencies.
+2.Spring for IOC,Stored Procedure and AOP
+3.JAX-WS for Web Service
