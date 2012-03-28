@@ -1,0 +1,38 @@
+How to build and run XeroxEconcierge project.
+
+Assumed Environment
+1.Java already installed
+2.Git already installed
+
+SYNOPSYS
+1.Install Apache Maven 3.0.3
+2.Pull the following on git repository
+	- <provide git location here>
+3.On the main project directory execute the maven syntax below to install mssql jdbc driver
+	- mvn install:install-file -DgroupId=com.sqlserver.jdbc -DartifactId=sqljdbc -Dversion=1.0.0 -Dfile=dependencies/sqljdbc.jar  -Dpackaging=jar
+4.Generate necessary encryption key for database and web service password
+	package the project
+	- mvn -e package
+	generate key and encrypted pasword for database and web service
+	for database
+	- nohup java -jar <xerox jar> -action crypt -key <24 char string> -value <database password> > databasePassword.txt &
+	for web serive
+	- nohup java -jar <xerox jar> -action crypt -key <24 char string same that is use in database password> -value <we service password> > webServicePassword.txt &
+	edit pom.xml and provide the generated key and ecrypted password
+5.To execute test run the following maven syntax
+	for development
+	- mvn -e test -P developer
+	for staging
+	- mvn -e test -P staging
+	for production
+	NOTE:do not perform test on production
+6.To create package run the following maven syntax
+	for development
+	- mvn -e package -P development		
+	for staging
+	- mvn -e package -P staging
+	for production NOTE:for production skip testing, because web service push is critical
+	- mvn -e package -Dmaven.test.skip=true -P production		
+7.To test the package
+	execute, NOTE : for production, create a valid key store and edit runXeroxApp
+	./runXeroxApp.sh

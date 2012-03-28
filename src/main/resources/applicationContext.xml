@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	default-lazy-init="true">
+
+	<!-- Activates scanning of @Autowired -->
+	<context:annotation-config />
+
+	<!-- Properties Configuration -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<!-- JDBC properties -->
+				<value>classpath:jdbc.properties</value>
+				<!-- Xerox configuration properties -->
+				<value>classpath:xerox.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
+	<!-- Activates scanning of @Repository and @Service -->
+	<context:component-scan base-package="com.ecommerce.econcierge" />
+
+	<!-- Data Source for ccproduct -->
+	<bean id="ccproductds"
+		class="com.ecommerce.econcierge.cfg.XeroxDriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.cc_product.driverClassName}" />
+		<property name="url" value="${jdbc.cc_product.url}" />
+		<property name="username" value="${jdbc.cc_product.username}" />
+		<property name="password" value="${jdbc.cc_product.password}" />
+	</bean>
+	
+	<!-- Trigger AOP, currently use for logging purposes for each method -->
+	<aop:aspectj-autoproxy />
+</beans>
