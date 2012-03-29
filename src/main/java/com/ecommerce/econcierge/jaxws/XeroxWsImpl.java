@@ -15,6 +15,8 @@ import com.ecommerce.econcierge.cfg.XeroxWebServiceException;
 import com.ecommerce.econcierge.model.CancelledOrderModel;
 import com.ecommerce.econcierge.model.ConfirmedOrderModel;
 import com.ecommerce.econcierge.model.NotifiedShipmentOrderModel;
+import com.ecommerce.econcierge.model.OrderLineItemModel;
+import com.ecommerce.econcierge.model.ShipmentLineItemModel;
 import com.ecommerce.econcierge.util.CfgCache;
 
 /**
@@ -57,47 +59,40 @@ public class XeroxWsImpl implements XeroxWs
 			OrderEventType arg0 = factory.createOrderEventType();
 			arg0.orderBean = new ArrayList<OrderBean>();
 			OrderBean order = factory.createOrderBean();
-			order.setTbOrderNumber("EC-011332890017347");
-			order.setNpOrderNumber("W8789710");
-			order.setFirstName("Abcede");
-			order.setLastName("Daeafa");
-			order.setAddressLine1("330, Port avenue");
-			order.setAddressLine2("Sterling boulevard");
-			order.setCity("St.Louis");
-			order.setState("MI");
-			order.setZipCode("64001");
-			order.setCountry("US");
-			order.setTotalAmount(4.0);
-			order.setTotalTax(1.0);
-			order.setShippingFee(3.0);
-			order.setDiscount(0.0);
-			order.setSubTotal(8.0);
-			
-			//Adding line Items
+			order.setTbOrderNumber(orderModel.getTbOrderNumber());
+			order.setNpOrderNumber(orderModel.getNpOrderNumber());
+			order.setFirstName(orderModel.getFirstName());
+			order.setLastName(orderModel.getLastName());
+			order.setAddressLine1(orderModel.getAddressLine1());
+			order.setAddressLine2(orderModel.getAddressLine2());
+			order.setCity(orderModel.getCity());
+			order.setState(orderModel.getState());
+			order.setZipCode(order.getZipCode());
+			order.setCountry(US_CODE);
+			order.setTotalAmount(orderModel.getTotalAmount());
+			order.setTotalTax(orderModel.getTotalTax());
+			order.setShippingFee(order.getShippingFee());
+			order.setDiscount(order.getDiscount());
+			order.setSubTotal(order.getSubTotal());
+
+			// Adding line Items
 			List<OrderLineItemBean> lineItems = new ArrayList<OrderLineItemBean>();
-			OrderLineItemBean lineItem = factory.createOrderLineItemBean();
-			lineItem.setMfgPartNumber("106R01388");
-			lineItem.setQuantity(1);
-			lineItem.setUnitPrice(1.0);
-			lineItems.add(lineItem);
-			lineItem = factory.createOrderLineItemBean();
-			lineItem.setMfgPartNumber("106R01389");
-			lineItem.setQuantity(1);
-			lineItem.setUnitPrice(1.0);
-			lineItems.add(lineItem);
-			lineItem = factory.createOrderLineItemBean();
-			lineItem.setMfgPartNumber("106R01390");
-			lineItem.setQuantity(1);
-			lineItem.setUnitPrice(1.0);
-			lineItems.add(lineItem);
-			lineItem = factory.createOrderLineItemBean();
-			lineItem.setMfgPartNumber("106R01391");
-			lineItem.setQuantity(1);
-			lineItem.setUnitPrice(1.0);
-			lineItems.add(lineItem);
-			
+			OrderLineItemBean lineItem = null;
+			List<OrderLineItemModel> items = orderModel.getOrderLineItems();
+			for (OrderLineItemModel item : items)
+			{
+				lineItem = factory.createOrderLineItemBean();
+				lineItem.setMfgPartNumber(item.getMfgPartNumber());
+				lineItem.setQuantity(item.getQuantity());
+				lineItem.setUnitPrice(item.getUnitPrice());
+				lineItems.add(lineItem);
+
+			}
 			order.orderLineItem = lineItems;
+
 			arg0.orderBean.add(order);
+
+			// send to xerox
 			service.createOrder(arg0);
 		} catch (ServiceException_Exception e)
 		{
@@ -121,9 +116,11 @@ public class XeroxWsImpl implements XeroxWs
 			CancelOrderEventType arg0 = factory.createCancelOrderEventType();
 			arg0.cancelOrderRequest = new ArrayList<CancelOrderRequest>();
 			CancelOrderRequest req = factory.createCancelOrderRequest();
-			req.setTbOrderNumber("EC-011332890071912");
-			req.setNpOrderNumber("W8789711");
+			req.setTbOrderNumber(order.getTbOrderNumber());
+			req.setNpOrderNumber(order.getTbOrderNumber());
 			arg0.cancelOrderRequest.add(req);
+
+			// send to xerox
 			service.cancelOrder(arg0);
 		} catch (ServiceException_Exception e)
 		{
@@ -147,36 +144,41 @@ public class XeroxWsImpl implements XeroxWs
 			ShipmentEventType arg0 = factory.createShipmentEventType();
 			arg0.shipmentBean = new ArrayList<ShipmentBean>();
 			ShipmentBean shipment = factory.createShipmentBean();
-			shipment.setTbOrderNumber("EC-011332890091926");
-			shipment.setNpOrderNumber("W8789712");
+			shipment.setTbOrderNumber(order.getTbOrderNumber());
+			shipment.setNpOrderNumber(order.getNpOrderNumber());
 			GregorianCalendar gc = new GregorianCalendar();
-			gc.setTimeInMillis(System.currentTimeMillis());
+			gc.setTimeInMillis(order.getShipDate().getTime());
 			DatatypeFactory df = DatatypeFactory.newInstance();
 			shipment.setShipDate(df.newXMLGregorianCalendar(gc));
-			shipment.setFirstName("ABC");
-			shipment.setLastName("DEF");
-			shipment.setAddressLine1("330, Port avenue");
-			shipment.setAddressLine2("Sterling boulevard");
-			shipment.setCity("St.Louis");
-			shipment.setState("MI");
-			shipment.setZipCode("64001");
-			shipment.setCountry("US");
-			shipment.setCarrierCode("FG");
-			shipment.setShipmentTrackingNumber("X12222");
-			shipment.setShipmentTrackingURL("http://www.xd.com/tracking?o=W1234");
+			shipment.setFirstName(order.getFirstName());
+			shipment.setLastName(order.getLastName());
+			shipment.setAddressLine1(order.getAddressLine1());
+			shipment.setAddressLine2(order.getAddressLine2());
+			shipment.setCity(order.getCity());
+			shipment.setState(order.getState());
+			shipment.setZipCode(order.getZipCode());
+			shipment.setCountry(US_CODE);
+			shipment.setCarrierCode(order.getCarrierCode());
+			shipment.setShipmentTrackingNumber(order.getShipmentTrackingNumber());
+			shipment.setShipmentTrackingURL(order.getShipmentTrackingURL());
 
+			// Adding shipment items
 			shipment.shipmentLineItem = new ArrayList<ShipmentLineItemBean>();
-			ShipmentLineItemBean lineItem = factory.createShipmentLineItemBean();
-			lineItem.setMfgPartNumber("106R01388");
-			lineItem.setDispatchedQuantity(2);
-			shipment.shipmentLineItem.add(lineItem);
-			lineItem = factory.createShipmentLineItemBean();
-			lineItem.setMfgPartNumber("106R01390");
-			lineItem.setDispatchedQuantity(1);
-			shipment.shipmentLineItem.add(lineItem);
-			
+			List<ShipmentLineItemModel> items = order.getShipmentLineItem();
+			ShipmentLineItemBean lineItem = null;
+			for (ShipmentLineItemModel item : items)
+			{
+				lineItem = factory.createShipmentLineItemBean();
+				lineItem.setMfgPartNumber(item.getMfgPartNumber());
+				lineItem.setDispatchedQuantity(item.getDispatchedQuantity());
+				lineItem.setShipmentTrackingNumber(item.getShipmentTrackingNumber());
+				lineItem.setShipmentTrackingURL(item.getShipmentTrackingURL());
+				shipment.shipmentLineItem.add(lineItem);
+
+			}
 			arg0.shipmentBean.add(shipment);
-			
+
+			// send to xerox
 			service.notifyShipment(arg0);
 		} catch (DatatypeConfigurationException e)
 		{

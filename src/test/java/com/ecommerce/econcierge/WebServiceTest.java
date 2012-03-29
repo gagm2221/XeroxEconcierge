@@ -21,7 +21,21 @@ public class WebServiceTest extends TestCase implements XeroxApplicationContext
 	/**
 	 * Instance of web service
 	 */
-	private static XeroxWs xeroxWs = context.getBean(XeroxWs.class);
+	private XeroxWs xeroxWs = null;
+
+	@Override
+	protected void setUp() throws Exception
+	{
+		super.setUp();
+		xeroxWs = context.getBean(XeroxWs.class);
+	}
+
+	@Override
+	protected void tearDown() throws Exception
+	{
+		super.tearDown();
+		xeroxWs = null;
+	}
 
 	public void testWebService()
 	{

@@ -8,9 +8,9 @@ package com.ecommerce.econcierge.model;
  */
 public class OrderLineItemModel
 {
-	protected String mfgPartNumber;
-	protected int quantity;
-	protected double unitPrice;
+	private String mfgPartNumber;
+	private int quantity;
+	private double unitPrice;
 	public String getMfgPartNumber()
 	{
 		return mfgPartNumber;

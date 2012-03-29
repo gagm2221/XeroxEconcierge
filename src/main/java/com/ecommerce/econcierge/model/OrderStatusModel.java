@@ -9,6 +9,7 @@ package com.ecommerce.econcierge.model;
 public class OrderStatusModel
 {
 	public static final boolean ALREADY_SENT_STATUS = true;
+	public static final boolean STOP_SHIPPING_STATUS = true;
 
 	private String tbOrderNumber;
 	private String npOrderNumber;

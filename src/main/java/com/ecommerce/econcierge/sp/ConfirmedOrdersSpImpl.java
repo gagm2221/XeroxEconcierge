@@ -1,6 +1,7 @@
 package com.ecommerce.econcierge.sp;
 
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.dao.DataAccessException;
 import com.ecommerce.econcierge.cfg.AbstractSimpleJdbcCall;
 import com.ecommerce.econcierge.cfg.StoredProcedure;
 import com.ecommerce.econcierge.model.ConfirmedOrderModel;
+import com.ecommerce.econcierge.model.OrderLineItemModel;
 
 /**
  * SP use to list all confirmed xerox orders
@@ -26,31 +28,22 @@ public class ConfirmedOrdersSpImpl extends AbstractSimpleJdbcCall<List<Confirmed
 {
 
 	/**
-	 * Parameters static variable names
-	 */
-	private static final String LIST = "list";
-	private static final String STORE = "STORE";
-	private static final String SOURCE = "Source";
-
-	/**
 	 * Declare the SP use and its parameters, use the cc_product_ds datasource
 	 * defined in the application context
 	 * 
 	 * @param dataSource
 	 */
 	@Inject
-	@Named(CC_PRODUCT_DS)
+	@Named(ISB_DATA_SOURCE)
 	public ConfirmedOrdersSpImpl(DataSource dataSource)
 	{
 		super(dataSource);
 
 		// Set the stored procedure to be called
-		super.setSp("dbo.prd_Get_Short_ProductDetails_list_v1");
+		super.setSp(SP_NAME);
 
 		// declare parameter
-		super.addDeclaredParameter(LIST, Types.VARCHAR);
-		super.addDeclaredParameter(STORE, Types.VARCHAR);
-		super.addDeclaredParameter(SOURCE, Types.VARCHAR);
+		super.addDeclaredParameter(STATUS, Types.VARCHAR);
 
 		// declare the result set
 		super.returningResultSet(RESULT, new OrderConfirmationRowMapper());
@@ -68,51 +61,77 @@ public class ConfirmedOrdersSpImpl extends AbstractSimpleJdbcCall<List<Confirmed
 	{
 		// The parameters
 		Map<String, Object> _in_param = new HashMap<String, Object>();
-		_in_param.put(LIST, this.getList());
-		_in_param.put(STORE, this.getStore());
-		_in_param.put(SOURCE, this.getSource());
+		_in_param.put(STATUS, CONFIRMED_STATUS);
 
 		// execute SP
 		Map<String, Object> result = super.run(_in_param);
 
 		// get the results
-		return (List<ConfirmedOrderModel>) result.get(RESULT);
+		List<ConfirmedOrderRow> list = (List<ConfirmedOrderRow>) result.get(RESULT);
+
+		// normalized the data
+		List<ConfirmedOrderModel> out = normalized(list);
+
+		return out;
 	}
 
 	/**
-	 * Parameters
+	 * Convert ConfirmedOrderRow into ConfirmedOrderModel
+	 * 
+	 * @param list
+	 * @return
 	 */
-	private String list;
-	private String store;
-	private String source;
-
-	public String getList()
+	private List<ConfirmedOrderModel> normalized(List<ConfirmedOrderRow> list)
 	{
-		return list;
-	}
+		List<ConfirmedOrderModel> out = new ArrayList<ConfirmedOrderModel>();
 
-	public void setList(String list)
-	{
-		this.list = list;
-	}
+		ConfirmedOrderModel nu;
+		ConfirmedOrderModel exist;
+		OrderLineItemModel item;
+		for (ConfirmedOrderRow row : list)
+		{
+			// header
+			nu = new ConfirmedOrderModel();
+			nu.setTbOrderNumber(row.getTbOrderNumber());
+			nu.setNpOrderNumber(row.getNpOrderNumber());
 
-	public String getStore()
-	{
-		return store;
-	}
+			nu.setFirstName(row.getFirstName());
+			nu.setLastName(row.getLastName());
+			nu.setAddressLine1(row.getAddressLine1());
+			nu.setAddressLine2(row.getAddressLine2());
+			nu.setCity(row.getCity());
+			nu.setState(row.getState());
+			nu.setZipCode(row.getZipCode());
+			nu.setCountry(row.getCountry());
+			nu.setTotalAmount(row.getTotalAmount());
+			nu.setTotalTax(row.getTotalTax());
+			nu.setShippingFee(row.getShippingFee());
+			nu.setDiscount(row.getDiscount());
+			nu.setSubTotal(row.getSubTotal());
 
-	public void setStore(String store)
-	{
-		this.store = store;
-	}
+			// detail
+			item = new OrderLineItemModel();
+			item.setMfgPartNumber(row.getMfgPartNumber());
+			item.setQuantity(row.getQuantity());
+			item.setUnitPrice(row.getUnitPrice());
 
-	public String getSource()
-	{
-		return source;
-	}
+			if (out.contains(nu))
+			{// when header already exist
+				exist = out.get(out.indexOf(nu));
 
-	public void setSource(String source)
-	{
-		this.source = source;
+				// add line item/detail to header
+				exist.getOrderLineItems().add(item);
+			} else
+			{// when new header
+				// set order line item
+				nu.setOrderLineItems(new ArrayList<OrderLineItemModel>());
+				nu.getOrderLineItems().add(item);
+
+				// add new header
+				out.add(nu);
+			}
+		}
+
+		return out;
 	}
 }

@@ -23,4 +23,9 @@ public interface SpJdbcCall<RETURN>
 	 * DataSource for ccproduct schema
 	 */
 	String CC_PRODUCT_DS = "ccproductds";
+	
+	/**
+	 * DataSource for isb
+	 */
+	String ISB_DATA_SOURCE = "isb";
 }

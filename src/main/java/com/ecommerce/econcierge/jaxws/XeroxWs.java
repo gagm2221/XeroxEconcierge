@@ -14,6 +14,11 @@ import com.ecommerce.econcierge.model.NotifiedShipmentOrderModel;
 public interface XeroxWs
 {
 	/**
+	 * US Code
+	 */
+	static String US_CODE = "US";
+
+	/**
 	 * Push order confirmation
 	 * 
 	 * @param order

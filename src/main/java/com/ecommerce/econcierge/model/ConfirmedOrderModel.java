@@ -1,5 +1,8 @@
 package com.ecommerce.econcierge.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Model for confirmed orders
  * 
@@ -24,7 +27,7 @@ public class ConfirmedOrderModel
 	private double discount;
 	private double subTotal;
 
-	private OrderLineItemModel orderLineItem;
+	private List<OrderLineItemModel> orderLineItems = new ArrayList<OrderLineItemModel>();
 
 	public String getTbOrderNumber()
 	{
@@ -176,14 +179,49 @@ public class ConfirmedOrderModel
 		this.subTotal = subTotal;
 	}
 
-	public OrderLineItemModel getOrderLineItem()
+	public List<OrderLineItemModel> getOrderLineItems()
 	{
-		return orderLineItem;
+		return orderLineItems;
 	}
 
-	public void setOrderLineItem(OrderLineItemModel orderLineItem)
+	public void setOrderLineItems(List<OrderLineItemModel> orderLineItems)
 	{
-		this.orderLineItem = orderLineItem;
+		this.orderLineItems = orderLineItems;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((npOrderNumber == null) ? 0 : npOrderNumber.hashCode());
+		result = prime * result + ((tbOrderNumber == null) ? 0 : tbOrderNumber.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ConfirmedOrderModel other = (ConfirmedOrderModel) obj;
+		if (npOrderNumber == null)
+		{
+			if (other.npOrderNumber != null)
+				return false;
+		} else if (!npOrderNumber.equals(other.npOrderNumber))
+			return false;
+		if (tbOrderNumber == null)
+		{
+			if (other.tbOrderNumber != null)
+				return false;
+		} else if (!tbOrderNumber.equals(other.tbOrderNumber))
+			return false;
+		return true;
 	}
 
 }

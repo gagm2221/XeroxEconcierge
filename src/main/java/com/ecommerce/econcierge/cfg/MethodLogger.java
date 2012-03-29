@@ -52,7 +52,7 @@ public class MethodLogger
 	 * @param ex
 	 */
 	@AfterThrowing(pointcut = "@annotation(com.ecommerce.econcierge.cfg.LogIt)", throwing = "ex")
-	public void throwMethodWhenXeroxServiceException(JoinPoint jp, Throwable ex)
+	public void throwMethod(JoinPoint jp, Throwable ex)
 	{
 		Logger logger = getLogger(jp);
 		String methodName = getMethodName(jp);

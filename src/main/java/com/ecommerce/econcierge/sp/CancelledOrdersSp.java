@@ -15,8 +15,18 @@ import com.ecommerce.econcierge.model.CancelledOrderModel;
  * @author EDavid
  * 
  */
-public interface CancelledOrdersSp
+public interface CancelledOrdersSp extends GetXeroxOrdersSp
 {
+
+	/**
+	 * The map key for result
+	 */
+	String RESULT = "result";
+
+	/**
+	 * Cancelled status argument
+	 */
+	String CANCELLED_STATUS = "Cancelled";
 
 	/**
 	 * WIll list all the cancelled orders
@@ -34,8 +44,8 @@ public interface CancelledOrdersSp
 	 */
 	class CancelledOrderRowMapper implements RowMapper<CancelledOrderModel>
 	{
-		private static final String TB_ORDER_NO = "TODO";
-		private static final String NP_ORDER_NO = "TODO";
+		private static final String TB_ORDER_NO = "XeroxOrder_No";
+		private static final String NP_ORDER_NO = "Order_No";
 
 		/*
 		 * Get values from result set

@@ -49,6 +49,7 @@ public class UtilTest extends TestCase implements XeroxApplicationContext
 		validateXeroxWsPassword();
 		validateXeroxServicePort();
 		validateXeroxEncryptionKey();
+		validateTrackingUrl();
 	}
 
 	/**
@@ -57,7 +58,9 @@ public class UtilTest extends TestCase implements XeroxApplicationContext
 	private void validateWsdlLocation()
 	{
 		logger.info("Start validateWsdlLocation");
-		assertNotNull("wsdlLocation is not set.", CfgCache.xerox.wsdlLocation());
+		String value = CfgCache.xerox.wsdlLocation();
+		logger.info("wsdl location : " + value);
+		assertNotNull("wsdlLocation is not set.", value);
 		logger.info("End validateWsdlLocation");
 	}
 
@@ -67,7 +70,9 @@ public class UtilTest extends TestCase implements XeroxApplicationContext
 	private void validateXeroxWsUsername()
 	{
 		logger.info("Start validateXeroxWsUsername");
-		assertNotNull("xeroxWsUsername is not set", CfgCache.xerox.xeroxWsUsername());
+		String value = CfgCache.xerox.xeroxWsUsername();
+		logger.info("ws username : " + value);
+		assertNotNull("xeroxWsUsername is not set", value);
 		logger.info("End validateXeroxWsUsername");
 	}
 
@@ -77,7 +82,9 @@ public class UtilTest extends TestCase implements XeroxApplicationContext
 	private void validateXeroxWsPassword()
 	{
 		logger.info("Start validateXeroxWsPassword");
-		assertNotNull("xeroxWsPassword is not set", CfgCache.xerox.xeroxWsPassword());
+		String value = CfgCache.xerox.xeroxWsPassword();
+		logger.info("xerox password : " + value);
+		assertNotNull("xeroxWsPassword is not set", value);
 		logger.info("End validateXeroxWsPassword");
 	}
 
@@ -87,7 +94,9 @@ public class UtilTest extends TestCase implements XeroxApplicationContext
 	private void validateXeroxServicePort()
 	{
 		logger.info("Start validateXeroxServicePort");
-		assertNotNull("xeroxServicePort is not set", CfgCache.xerox.xeroxServicePort());
+		String value = CfgCache.xerox.xeroxServicePort();
+		logger.info("xerox service port : " + value);
+		assertNotNull("xeroxServicePort is not set", value);
 		logger.info("End validateXeroxServicePort");
 	}
 
@@ -97,8 +106,22 @@ public class UtilTest extends TestCase implements XeroxApplicationContext
 	private void validateXeroxEncryptionKey()
 	{
 		logger.info("Start validateXeroxEncryptionKey");
-		assertNotNull("xeroxEncryptionKey is not set", CfgCache.xerox.xeroxEncryptionKey());
+		String value = CfgCache.xerox.xeroxEncryptionKey();
+		logger.info("encryption key : " + value);
+		assertNotNull("xeroxEncryptionKey is not set", value);
 		logger.info("End validateXeroxEncryptionKey");
+	}
+
+	/**
+	 * Validate shipment tracking URL
+	 */
+	private void validateTrackingUrl()
+	{
+		logger.info("Start validateTrackingUrl");
+		String value = CfgCache.xerox.shipmentTrackingUrl("s83fj9Asfg456sdfg");
+		logger.info("tracking url : " + value);
+		assertNotNull("validateTrackingUrl is not set", value);
+		logger.info("End validateTrackingUrl");
 	}
 
 	/**
@@ -189,4 +212,5 @@ public class UtilTest extends TestCase implements XeroxApplicationContext
 			logger.error("Error validateGreaterThan24EKey : " + e.getMessage());
 		}
 	}
+
 }

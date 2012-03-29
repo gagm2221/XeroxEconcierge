@@ -51,7 +51,7 @@ public class XeroxPropertiesImpl implements XeroxProperties
 			return crypt.decrypt(xeroxWsPassword);
 		} catch (EncryptionException e)
 		{
-			throw new XeroxRuntimeException("Error getting the  xeroxWsPassword : "+e.toString());
+			throw new XeroxRuntimeException("Error getting the  xeroxWsPassword : " + e.toString());
 		}
 	}
 
@@ -60,12 +60,12 @@ public class XeroxPropertiesImpl implements XeroxProperties
 	 */
 	@Value("${xerox.ws.servicePort}")
 	private String xeroxServicePort;
-	
+
 	public String xeroxServicePort()
 	{
 		return xeroxServicePort;
 	}
-	
+
 	/**
 	 * The encryption key provided
 	 */
@@ -75,5 +75,16 @@ public class XeroxPropertiesImpl implements XeroxProperties
 	public String xeroxEncryptionKey()
 	{
 		return encryptionKey;
+	}
+
+	/**
+	 * Shipment tracking URL template
+	 */
+	@Value("${xerox.shipment.tracking.url}")
+	private String shipmentTrackingUrl;
+
+	public String shipmentTrackingUrl(String trackingNumber)
+	{
+		return shipmentTrackingUrl + ((trackingNumber == null) ? "" : trackingNumber);
 	}
 }

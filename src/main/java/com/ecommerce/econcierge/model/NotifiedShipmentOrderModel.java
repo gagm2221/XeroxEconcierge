@@ -1,5 +1,6 @@
 package com.ecommerce.econcierge.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +26,9 @@ public class NotifiedShipmentOrderModel
 	private String carrierCode;
 	private String shipmentTrackingNumber;
 	private String shipmentTrackingURL;
-	
-	private List<ShipmentLineItemModel> shipmentLineItem;
+	private String shipmentStatus;
+
+	private List<ShipmentLineItemModel> shipmentLineItem = new ArrayList<ShipmentLineItemModel>();;
 
 	public String getTbOrderNumber()
 	{
@@ -168,6 +170,16 @@ public class NotifiedShipmentOrderModel
 		this.shipmentTrackingURL = shipmentTrackingURL;
 	}
 
+	public String getShipmentStatus()
+	{
+		return shipmentStatus;
+	}
+
+	public void setShipmentStatus(String shipmentStatus)
+	{
+		this.shipmentStatus = shipmentStatus;
+	}
+
 	public List<ShipmentLineItemModel> getShipmentLineItem()
 	{
 		return shipmentLineItem;
@@ -177,6 +189,40 @@ public class NotifiedShipmentOrderModel
 	{
 		this.shipmentLineItem = shipmentLineItem;
 	}
-	
-	
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((npOrderNumber == null) ? 0 : npOrderNumber.hashCode());
+		result = prime * result + ((tbOrderNumber == null) ? 0 : tbOrderNumber.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NotifiedShipmentOrderModel other = (NotifiedShipmentOrderModel) obj;
+		if (npOrderNumber == null)
+		{
+			if (other.npOrderNumber != null)
+				return false;
+		} else if (!npOrderNumber.equals(other.npOrderNumber))
+			return false;
+		if (tbOrderNumber == null)
+		{
+			if (other.tbOrderNumber != null)
+				return false;
+		} else if (!tbOrderNumber.equals(other.tbOrderNumber))
+			return false;
+		return true;
+	}
+
 }

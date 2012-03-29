@@ -37,6 +37,14 @@
 		<property name="password" value="${jdbc.cc_product.password}" />
 	</bean>
 	
+	<bean id="isb"
+		class="com.ecommerce.econcierge.cfg.XeroxDriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc._isb.driverClassName}" />
+		<property name="url" value="${jdbc._isb.url}" />
+		<property name="username" value="${jdbc._isb.username}" />
+		<property name="password" value="${jdbc._isb.password}" />
+	</bean>
+
 	<!-- Trigger AOP, currently use for logging purposes for each method -->
 	<aop:aspectj-autoproxy />
 </beans>
