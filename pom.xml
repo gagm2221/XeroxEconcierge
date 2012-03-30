@@ -22,6 +22,12 @@
 				<jdbc.ccproduct.username>TODO</jdbc.ccproduct.username>
 				<jdbc.ccproduct.password>TODO</jdbc.ccproduct.password>
 
+				<!-- For isb datasource -->
+				<jdbc.isb.driverClassName>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc.isb.driverClassName>
+				<jdbc.isb.url>TODO</jdbc.isb.url>
+				<jdbc.isb.username>TODO</jdbc.isb.username>
+				<jdbc.isb.password>TODO</jdbc.isb.password>
+
 				<!-- Configuration for log4j -->
 				<log.file>log/xerox.dev.log.out</log.file>
 
@@ -31,6 +37,7 @@
 				<xerox.ws.password>TODO</xerox.ws.password>
 				<xerox.ws.servicePort>TODO</xerox.ws.servicePort>
 				<xerox.encryptionKey>TODO</xerox.encryptionKey>
+				<xerox.shipment.tracking.url><![CDATA[http://localhost:18080/ttsvr/n/msc-222?op=zones.shipmentTracking.shipmentTracking&carrier=fedex&trackingNo=]]></xerox.shipment.tracking.url>				
 			</properties>
 			<!-- Set the profile as default profile -->
 			<activation>
@@ -48,6 +55,12 @@
 				<jdbc.ccproduct.username>TODO</jdbc.ccproduct.username>
 				<jdbc.ccproduct.password>TODO</jdbc.ccproduct.password>
 
+				<!-- For isb datasource -->
+				<jdbc.isb.driverClassName>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc.isb.driverClassName>
+				<jdbc.isb.url>TODO</jdbc.isb.url>
+				<jdbc.isb.username>TODO</jdbc.isb.username>
+				<jdbc.isb.password>TODO</jdbc.isb.password>
+
 				<!-- Configuration for log4j -->
 				<log.file>log/xerox.staging.log.out</log.file>
 
@@ -57,6 +70,7 @@
 				<xerox.ws.password>TODO</xerox.ws.password>
 				<xerox.ws.servicePort>TODO</xerox.ws.servicePort>
 				<xerox.encryptionKey>TODO</xerox.encryptionKey>
+				<xerox.shipment.tracking.url><![CDATA[http://localhost:18080/ttsvr/n/msc-222?op=zones.shipmentTracking.shipmentTracking&carrier=fedex&trackingNo=]]></xerox.shipment.tracking.url>				
 			</properties>
 		</profile>
 		<!-- For Production -->
@@ -70,6 +84,12 @@
 				<jdbc.ccproduct.username>TODO</jdbc.ccproduct.username>
 				<jdbc.ccproduct.password>TODO</jdbc.ccproduct.password>
 
+				<!-- For isb datasource -->
+				<jdbc.isb.driverClassName>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc.isb.driverClassName>
+				<jdbc.isb.url>TODO</jdbc.isb.url>
+				<jdbc.isb.username>TODO</jdbc.isb.username>
+				<jdbc.isb.password>TODO</jdbc.isb.password>
+
 				<!-- Configuration for log4j -->
 				<log.file>log/xerox.prod.log.out</log.file>
 
@@ -79,6 +99,7 @@
 				<xerox.ws.password>TODO</xerox.ws.password>
 				<xerox.ws.servicePort>TODO</xerox.ws.servicePort>
 				<xerox.encryptionKey>TODO</xerox.encryptionKey>
+				<xerox.shipment.tracking.url><![CDATA[http://localhost:18080/ttsvr/n/msc-222?op=zones.shipmentTracking.shipmentTracking&carrier=fedex&trackingNo=]]></xerox.shipment.tracking.url>				
 			</properties>
 		</profile>
 	</profiles>
